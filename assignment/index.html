@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Eugenio Vinicio Berretta (euberdeveloper@gmail.com)" />
+    <meta name="description" content="semplice sito pensato per gli studenti dell' Università degli studi di Trento che frequentano il corso di informatica nell'anno 2019-2020, per generare automaticamente oggetto e corpo delle mail per il progetto di sistemi operativi"
+    />
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        /* NORMAL */
+        
+        @font-face {
+            font-family: "Gotham";
+            font-weight: normal;
+            font-style: normal;
+            src: url("../assets/fonts/gotham/ttf/300/Gotham_300.otf");
+        }
+        
+        @font-face {
+            font-family: "Gotham";
+            font-weight: bold;
+            font-style: normal;
+            src: url("../assets/fonts/gotham/ttf/400/Gotham_400.otf");
+        }
+        /* ITALIC */
+        
+        @font-face {
+            font-family: "Gotham";
+            font-weight: normal;
+            font-style: italic;
+            src: url("../assets/fonts/gotham/ttf/300/Gotham_300i.otf");
+        }
+        
+        @font-face {
+            font-family: "Gotham";
+            font-weight: bold;
+            font-style: italic;
+            src: url("../assets/fonts/gotham/ttf/400/Gotham_400i.otf");
+        }
+        /* BUTTON */
+        
+        .btn-elegant {
+            font-family: 'Gotham', cursive;
+            border: none;
+            background-color: transparent;
+            text-align: center;
+            letter-spacing: 0.8px;
+            text-decoration: underline;
+            text-decoration-color: transparent;
+            transition: text-decoration-color 500ms;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 10px 18px;
+            color: #000000;
+        }
+        
+        .btn-elegant:hover,
+        .btn-elegant:active,
+        .btn-elegant:focus {
+            outline: none;
+            text-decoration-color: #000000;
+        }
+        /* INPUT */
+        
+        .input-elegant {
+            font-family: 'Gotham', cursive;
+            font-size: 16px;
+            padding: 6px 7px;
+            width: calc(100% - 2 * 7px);
+            color: #000000;
+            background-color: #FFFFFF;
+            border-color: #000000;
+            outline-color: #000000;
+            border: 1px solid;
+            outline: none;
+            transition: outline 100ms;
+        }
+        
+        .input-elegant:focus {
+            outline: 0.5px solid;
+        }
+        
+        .input-elegant::placeholder {
+            color: #807A7A;
+        }
+        /* ALL THE REST */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Gotham', cursive;
+            font-size: 18px;
+        }
+        
+         ::selection {
+            background: #8EBAF0;
+        }
+        
+        .block {
+            margin: 54px 18%;
+        }
+        
+        .title {
+            font-size: 28px;
+            text-align: center;
+            margin: 32px 0;
+        }
+        
+        .description {
+            text-align: justify;
+        }
+        
+        .subtitle {
+            font-size: 26px;
+            text-align: start;
+            margin: 48px 0;
+            padding-bottom: 1.5px;
+            border-bottom: 1px solid #000000;
+        }
+        
+        .question {
+            margin: 72px 0;
+        }
+        
+        .question .label {
+            font-size: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .radio-option span {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        
+        .specification {
+            font-size: 14px;
+            font-weight: bold;
+            font-style: italic;
+            color: #0000FF;
+        }
+        
+        .group-component {
+            margin: 24px 0;
+        }
+        
+        .group-component .label {
+            margin-bottom: 15px;
+        }
+        
+        .group-component .fields {
+            display: grid;
+            grid-template: 1fr 1fr / 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .button-container {
+            margin: 0 0;
+            text-align: center;
+        }
+        
+        .result-block {
+            margin: 48px 0;
+        }
+        
+        .result-block .label {
+            font-size: 20px;
+            margin: 24px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .generated {
+            white-space: pre;
+            font-style: italic;
+            font-size: 14px;
+            padding: 14px;
+            background-color: #e3f5f7;
+            border: 1px solid #000000;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        #share .label {
+            font-size: 20px;
+            margin: 24px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy {
+            width: 24px;
+            height: 24px;
+            margin: 0 12px;
+            cursor: pointer;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        #dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #00000088;
+            visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: all 150ms ease-in;
+        }
+        
+        #dialog .content {
+            background-color: #FFFFFF;
+            min-width: 40%;
+            min-height: 30%;
+            max-width: 80%;
+            max-height: 70%;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+        
+        #dialog .content .exit {
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+            position: absolute;
+            top: 12px;
+            right: 12px;
+        }
+        
+        @media (max-width: 750px) {
+            .block {
+                margin: 54px 5%;
+            }
+            .group-component .fields {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: stretch
+            }
+            .group-component .fields input {
+                margin: 16px 0;
+            }
+            #dialog .content {
+                min-width: 80%;
+                min-height: 30%;
+                max-width: 90%;
+                max-height: 95%;
+            }
+        }
+        
+        @media (min-width: 750) and (max-width: 1200) {
+            .block {
+                margin: 54px 10%;
+            }
+        }
+    </style>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141587717-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-141587717-4');
+    </script>
+
+    <title>Unitn Naimail Generator</title>
+</head>
+
+<body>
+    <div id="introduction" class="block">
+        <h1 class="title">UNITN NAIMAIL GENERATOR</h1>
+        <p class="description">
+            Questo è un semplice sito pensato per gli studenti dell'<i>Università degli studi di Trento</i> che frequentano il corso di informatica nell'anno 2019-2020. Nel corso di <i>Sistemi Operativi</i> è previsto fare un progetto a gruppi ed in caso
+            di richieste al professore bisogna inviare email di cui l'oggetto ed il corpo hanno formati ben definiti. Per semplificarne la vita, questo sito permette, dopo aver compilato i vari campi, di generare automaticamente oggetto e corpo, che saranno
+            memorizzati localmente nel browser.
+        </p>
+    </div>
+
+    <div id="form" class="block">
+
+        <h2 class="subtitle">FORM</h2>
+
+        <div class="question">
+            <div class="label">Variante del progetto:</div>
+            <label class="radio-option">
+                <input type="radio" id="project_variant_ubuntu" name="project_variant" value="Ubuntu" checked />
+                <span>Ubuntu</span>
+            </label>
+            <label class="radio-option">
+                <input type="radio" id="project_variant_raspberry" name="project_variant" value="Raspberry" />
+                <span>Raspberry</span>
+            </label>
+
+
+        </div>
+
+        <div class="question">
+            <div class="label">Email del gruppo:</div>
+            <input class="input-elegant" type="email" placeholder="email@gruppo.com" id="group_email" />
+        </div>
+
+        <div class="question">
+            <div class="label">Componenti del gruppo <span class="specification">(min: 1, max: 4):</span></div>
+            <input class="input-elegant" type="number" placeholder="NUMERO COMPONENTI" min="1" max="4" value="4" id="components_number" onchange="componentsNumberUpdated()" />
+
+            <div class="group-component">
+                <div class="label">Componente 1:</div>
+                <div class="fields">
+                    <input class="input-elegant" type="text" placeholder="NOME" name="component_name" />
+                    <input class="input-elegant" type="text" placeholder="COGNOME" name="component_surname" />
+                    <input class="input-elegant" type="email" placeholder="EMAIL" name="component_email" />
+                    <input class="input-elegant" type="text" placeholder="MATRICOLA" name="component_matricola" />
+                </div>
+            </div>
+
+            <div class="group-component">
+                <div class="label">Componente 2:</div>
+                <div class="fields">
+                    <input class="input-elegant" type="text" placeholder="NOME" name="component_name" />
+                    <input class="input-elegant" type="text" placeholder="COGNOME" name="component_surname" />
+                    <input class="input-elegant" type="email" placeholder="EMAIL" name="component_email" />
+                    <input class="input-elegant" type="text" placeholder="MATRICOLA" name="component_matricola" />
+                </div>
+            </div>
+
+            <div class="group-component">
+                <div class="label">Componente 3:</div>
+                <div class="fields">
+                    <input class="input-elegant" type="text" placeholder="NOME" name="component_name" />
+                    <input class="input-elegant" type="text" placeholder="COGNOME" name="component_surname" />
+                    <input class="input-elegant" type="email" placeholder="EMAIL" name="component_email" />
+                    <input class="input-elegant" type="text" placeholder="MATRICOLA" name="component_matricola" />
+                </div>
+            </div>
+
+            <div class="group-component">
+                <div class="label">Componente 4:</div>
+                <div class="fields">
+                    <input class="input-elegant" type="text" placeholder="NOME" name="component_name" />
+                    <input class="input-elegant" type="text" placeholder="COGNOME" name="component_surname" />
+                    <input class="input-elegant" type="email" placeholder="EMAIL" name="component_email" />
+                    <input class="input-elegant" type="text" placeholder="MATRICOLA" name="component_matricola" />
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn-elegant" onclick="generate()">GENERA</button>
+        </div>
+    </div>
+
+    <div id="result" class="block">
+        <h2 class="subtitle">RISULTATO</h2>
+
+        <div class="result-block">
+            <div class="label">
+                <span>OGGETTO EMAIL</span>
+                <img class="copy" src="assets/icons/copy.svg" alt="copy" title="copia" onclick="copy('generated_subject')" />
+            </div>
+            <div id="generated_subject" class="generated">
+            </div>
+        </div>
+
+        <div class="result-block">
+            <div class="label">
+                <span>CORPO EMAIL</span>
+                <img class="copy" src="assets/icons/copy.svg" alt="copy" title="copia" onclick="copy('generated_body')" />
+            </div>
+            <div id="generated_body" class="generated"></div>
+        </div>
+    </div>
+
+    <div id="share" class="block">
+        <h2 class="subtitle">CONDIVIDI</h2>
+        <div class="description">Per condividere i dati con qualcuno, copia ed condividi lo script qui sotto. Il destinatario dovr&agrave; poi andare su questo sito, utilizzare ispeziona elemento nel browser (su Chrome Ctrl-Shift-I), incollarlo ed eseguirlo nella console di javascript.</div>
+        <div class="label">
+            <span>SCRIPT</span>
+            <img class="copy" src="assets/icons/copy.svg" alt="copy" title="copia" onclick="copy('generated_script')" />
+        </div>
+        <div id="generated_script" class="generated"></div>
+    </div>
+
+    <div id="dialog">
+        <div class="content">
+            <img class="exit" src="assets/icons/exit.svg" alt="exit" title="esci" onclick="closeDialog()" />
+            <div id="dialog_message"></div>
+        </div>
+    </div>
+
+    <script>
+        /* COPY TO CLIPBOARD (downloaded) */
+
+        ! function(e) {
+            if ("object" == typeof exports && "undefined" != typeof module) module.exports = e();
+            else if ("function" == typeof define && define.amd) define([], e);
+            else {
+                ("undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : this).copyToClipboard = e()
+            }
+        }(function() {
+            return function() {
+                return function e(t, n, o) {
+                    function r(a, i) {
+                        if (!n[a]) {
+                            if (!t[a]) {
+                                var u = "function" == typeof require && require;
+                                if (!i && u) return u(a, !0);
+                                if (c) return c(a, !0);
+                                var l = new Error("Cannot find module '" + a + "'");
+                                throw l.code = "MODULE_NOT_FOUND", l
+                            }
+                            var s = n[a] = {
+                                exports: {}
+                            };
+                            t[a][0].call(s.exports, function(e) {
+                                return r(t[a][1][e] || e)
+                            }, s, s.exports, e, t, n, o)
+                        }
+                        return n[a].exports
+                    }
+                    for (var c = "function" == typeof require && require, a = 0; a < o.length; a++) r(o[a]);
+                    return r
+                }
+            }()({
+                1: [function(e, t, n) {
+                    "use strict";
+                    var o = e("toggle-selection"),
+                        r = "Copy to clipboard: #{key}, Enter";
+                    t.exports = function(e, t) {
+                        var n, c, a, i, u, l, s = !1;
+                        t || (t = {}), n = t.debug || !1;
+                        try {
+                            if (a = o(), i = document.createRange(), u = document.getSelection(), (l = document.createElement("span")).textContent = e, l.style.all = "unset", l.style.position = "fixed", l.style.top = 0, l.style.clip = "rect(0, 0, 0, 0)", l.style.whiteSpace = "pre", l.style.webkitUserSelect = "text", l.style.MozUserSelect = "text", l.style.msUserSelect = "text", l.style.userSelect = "text", document.body.appendChild(l), i.selectNode(l), u.addRange(i), !document.execCommand("copy")) throw new Error("copy command was unsuccessful");
+                            s = !0
+                        } catch (o) {
+                            n && console.error("unable to copy using execCommand: ", o), n && console.warn("trying IE specific stuff");
+                            try {
+                                window.clipboardData.setData("text", e), s = !0
+                            } catch (o) {
+                                n && console.error("unable to copy using clipboardData: ", o), n && console.error("falling back to prompt"), c = function(e) {
+                                    var t = (/mac os x/i.test(navigator.userAgent) ? "âŒ˜" : "Ctrl") + "+C";
+                                    return e.replace(/#{\s*key\s*}/g, t)
+                                }("message" in t ? t.message : r), window.prompt(c, e)
+                            }
+                        } finally {
+                            u && ("function" == typeof u.removeRange ? u.removeRange(i) : u.removeAllRanges()), l && document.body.removeChild(l), a()
+                        }
+                        return s
+                    }
+                }, {
+                    "toggle-selection": 2
+                }],
+                2: [function(e, t, n) {
+                    t.exports = function() {
+                        var e = document.getSelection();
+                        if (!e.rangeCount) return function() {};
+                        for (var t = document.activeElement, n = [], o = 0; o < e.rangeCount; o++) n.push(e.getRangeAt(o));
+                        switch (t.tagName.toUpperCase()) {
+                            case "INPUT":
+                            case "TEXTAREA":
+                                t.blur();
+                                break;
+                            default:
+                                t = null
+                        }
+                        return e.removeAllRanges(),
+                            function() {
+                                "Caret" === e.type && e.removeAllRanges(), e.rangeCount || n.forEach(function(t) {
+                                    e.addRange(t)
+                                }), t && t.focus()
+                            }
+                    }
+                }, {}]
+            }, {}, [1])(1)
+        });
+
+        /* GENERATORS */
+
+        function generateSubject(formData) {
+            const matricole = formData.components.map(c => c.matricola).join(', ');
+            return `PROGETTO II LabSO1 - AA 2019-2020 -- ${matricole}`;
+        }
+
+        function generateBody(formData) {
+            const matricole = formData.components.map(c => c.matricola).join(', ');
+            const componentsDetails = formData.components.map(c => `${c.name} ${c.surname}, ${c.email} ${c.matricola}`).join('\n');
+            return `PROGETTO II LabSO1 - AA 2019-2020 -- ${matricole}
+
+${formData.groupEmail} - Variante "${formData.projectVariant}"
+    
+    
+${componentsDetails}
+    
+--------------------------------------------------------------------
+    
+TITOLO RICHIESTA
+    
+---Richiesta---`;
+        }
+
+        function generateScript(formData) {
+            const serialized = JSON.stringify(formData, null, 2);
+            return `generate(${serialized}, true);`;
+        }
+
+        /* VALIDATORS */
+
+        function validateNumber(value) {
+            return !isNaN(value) && 1 <= value && value <= 4;
+        }
+
+        function validateEmail(value) {
+            return !!value && /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(value);
+        }
+
+        function validateVariant(value) {
+            return value === 'Ubuntu' || value === 'Raspberry';
+        }
+
+        function validateMatricola(value) {
+            return !!value && /^[0-9]*$/.test(value);
+        }
+
+        function validateText(value) {
+            return !!value;
+        }
+
+        function validateFormData(formData) {
+            return validateVariant(formData.projectVariant) &&
+                validateNumber(formData.componentsNumber) &&
+                validateEmail(formData.groupEmail) &&
+                formData.components.slice(0, formData.componentsNumber).every(c =>
+                    validateEmail(c.email) &&
+                    validateText(c.name) &&
+                    validateText(c.surname) &&
+                    validateMatricola(c.matricola)
+                )
+        }
+
+        /* ALL THE REST */
+
+        /* ELEMENTS REFERENCES */
+
+        const result = document.getElementById('result');
+        const share = document.getElementById('share');
+        const generatedSubject = document.getElementById('generated_subject');
+        const generatedBody = document.getElementById('generated_body');
+        const generatedScript = document.getElementById('generated_script');
+        const dialog = document.getElementById('dialog');
+
+        /* UTILITY FUNCTIONS */
+
+        function hideElement(element) {
+            element.style.display = 'none';
+        }
+
+        function showElement(element, display) {
+            element.style.display = display || 'block';
+        }
+
+        function showDialog(message) {
+            dialog.querySelector('#dialog_message').innerText = message;
+            dialog.style.opacity = 1;
+            dialog.style.visibility = 'visible';
+        }
+
+        function fetchFormData() {
+            const raw = localStorage.getItem('naimail_data');
+
+            try {
+                return JSON.parse(raw);
+            } catch {
+                return null;
+            }
+        }
+
+        function getFormData() {
+            return {
+                projectVariant: document.querySelector('input[name="project_variant"]:checked').value,
+                groupEmail: document.querySelector('#group_email').value,
+                componentsNumber: +document.querySelector('#components_number').value,
+                components: [...document.querySelectorAll('.group-component')]
+                    .slice(0, +document.querySelector('#components_number').value)
+                    .map(component => ({
+                        name: component.querySelector('input[name="component_name"]').value,
+                        surname: component.querySelector('input[name="component_surname"]').value,
+                        email: component.querySelector('input[name="component_email"]').value,
+                        matricola: component.querySelector('input[name="component_matricola"]').value
+                    }))
+            };
+        }
+
+        function updateFormData(formData) {
+            document.querySelector('#project_variant_ubuntu').checked = formData.projectVariant === 'Ubuntu';
+            document.querySelector('#project_variant_raspberry').checked = formData.projectVariant === 'Raspberry';
+            document.querySelector('#group_email').value = formData.groupEmail;
+            document.querySelector('#components_number').value = formData.componentsNumber;
+            [...document.querySelectorAll('.group-component')]
+            .slice(0, formData.componentsNumber)
+                .forEach((componentEl, index) => {
+                    ['name', 'surname', 'email', 'matricola'].forEach(key =>
+                        componentEl.querySelector(`input[name="component_${key}"]`).value = formData.components[index][key]
+                    );
+                });
+
+            componentsNumberUpdated();
+        }
+
+        /* EVENT HANDLERS */
+
+        function copy(id) {
+            const element = document.getElementById(id);
+            const text = element.innerText;
+            copyToClipboard(text);
+            showDialog('Testo copiato negli appunti');
+        }
+
+        function closeDialog() {
+            dialog.style.opacity = 0;
+            dialog.style.visibility = 'hidden';
+        }
+
+        function componentsNumberUpdated() {
+            const numberComponent = document.querySelector('#components_number');
+            const n = +numberComponent.value;
+
+            if (validateNumber(n)) {
+                const components = [...document.querySelectorAll('.group-component')];
+                components.forEach((component, index) => {
+                    if (index + 1 > n) {
+                        hideElement(component);
+                    } else {
+                        showElement(component);
+                    }
+                });
+            } else {
+                document.querySelector('#components_number').value = 4;
+                componentsNumberUpdated();
+            }
+        }
+
+        function generate(fetched, isFetched) {
+            const formData = isFetched ? fetched : getFormData();
+            if (validateFormData(formData)) {
+                localStorage.setItem('naimail_data', JSON.stringify(formData));
+
+                if (isFetched) {
+                    updateFormData(formData);
+                }
+
+                showElement(result);
+                generatedSubject.innerText = generateSubject(formData);
+                generatedBody.innerText = generateBody(formData);
+                generatedScript.innerText = generateScript(formData);
+            } else {
+                showDialog('Errore, compilare correttamente i campi.')
+            }
+        }
+
+        /* ONLOAD */
+
+        document.body.onload = function() {
+            const formData = fetchFormData();
+            if (formData) {
+                generate(formData, true);
+            } else {
+                hideElement(result);
+                hideElement(share);
+            }
+
+        }
+    </script>
+</body>
+
+</html>

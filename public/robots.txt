@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://https://unitn-naimailgenerator.now.sh/sitemap.xml

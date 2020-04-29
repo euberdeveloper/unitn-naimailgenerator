@@ -1,0 +1,32 @@
+/* NORMAL */
+
+@font-face {
+    font-family: "Gotham";
+    font-weight: normal;
+    font-style: normal;
+    src: url("../assets/fonts/gotham/ttf/300/Gotham_300.otf");
+}
+
+@font-face {
+    font-family: "Gotham";
+    font-weight: bold;
+    font-style: normal;
+    src: url("../assets/fonts/gotham/ttf/400/Gotham_400.otf");
+}
+
+
+/* ITALIC */
+
+@font-face {
+    font-family: "Gotham";
+    font-weight: normal;
+    font-style: italic;
+    src: url("../assets/fonts/gotham/ttf/300/Gotham_300i.otf");
+}
+
+@font-face {
+    font-family: "Gotham";
+    font-weight: bold;
+    font-style: italic;
+    src: url("../assets/fonts/gotham/ttf/400/Gotham_400i.otf");
+}

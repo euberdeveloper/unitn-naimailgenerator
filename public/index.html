@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Eugenio Vinicio Berretta (euberdeveloper@gmail.com)" />
+    <meta name="description" content="semplice sito pensato per gli studenti dell' Università degli studi di Trento che frequentano il corso di informatica nell'anno 2019-2020, per generare automaticamente oggetto e corpo delle mail per il progetto di sistemi operativi"
+    />
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="index.css" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141587717-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-141587717-4');
+    </script>
+
+    <title>Unitn Naimail Generator</title>
+</head>
+
+<body>
+    <div id="introduction" class="block">
+        <h1 class="title">UNITN NAIMAIL GENERATOR</h1>
+        <p class="description">
+            Questo è un semplice sito pensato per gli studenti dell'<i>Università degli studi di Trento</i> che frequentano il corso di informatica nell'anno 2019-2020. Nel corso di <i>Sistemi Operativi</i> è previsto fare un progetto a gruppi ed in caso
+            di richieste al professore bisogna inviare email di cui l'oggetto ed il corpo hanno formati ben definiti. Per semplificarne la vita, questo sito permette, dopo aver compilato i vari campi, di generare automaticamente oggetto e corpo, che saranno
+            memorizzati localmente nel browser.
+        </p>
+    </div>
+
+    <div id="form" class="block">
+
+        <h2 class="subtitle">FORM</h2>
+
+        <div class="question">
+            <div class="label">Variante del progetto:</div>
+            <label class="radio-option">
+                <input type="radio" id="project_variant_ubuntu" name="project_variant" value="Ubuntu" checked />
+                <span>Ubuntu</span>
+            </label>
+            <label class="radio-option">
+                <input type="radio" id="project_variant_raspberry" name="project_variant" value="Raspberry" />
+                <span>Raspberry</span>
+            </label>
+
+
+        </div>
+
+        <div class="question">
+            <div class="label">Email del gruppo:</div>
+            <input class="input-elegant" type="email" placeholder="email@gruppo.com" id="group_email" />
+        </div>
+
+        <div class="question">
+            <div class="label">Componenti del gruppo <span class="specification">(min: 1, max: 4):</span></div>
+            <input class="input-elegant" type="number" placeholder="NUMERO COMPONENTI" min="1" max="4" value="4" id="components_number" onchange="componentsNumberUpdated()" />
+
+            <div class="group-component">
+                <div class="label">Componente 1:</div>
+                <div class="fields">
+                    <input class="input-elegant" type="text" placeholder="NOME" name="component_name" />
+                    <input class="input-elegant" type="text" placeholder="COGNOME" name="component_surname" />
+                    <input class="input-elegant" type="email" placeholder="EMAIL" name="component_email" />
+                    <input class="input-elegant" type="text" placeholder="MATRICOLA" name="component_matricola" />
+                </div>
+            </div>
+
+            <div class="group-component">
+                <div class="label">Componente 2:</div>
+                <div class="fields">
+                    <input class="input-elegant" type="text" placeholder="NOME" name="component_name" />
+                    <input class="input-elegant" type="text" placeholder="COGNOME" name="component_surname" />
+                    <input class="input-elegant" type="email" placeholder="EMAIL" name="component_email" />
+                    <input class="input-elegant" type="text" placeholder="MATRICOLA" name="component_matricola" />
+                </div>
+            </div>
+
+            <div class="group-component">
+                <div class="label">Componente 3:</div>
+                <div class="fields">
+                    <input class="input-elegant" type="text" placeholder="NOME" name="component_name" />
+                    <input class="input-elegant" type="text" placeholder="COGNOME" name="component_surname" />
+                    <input class="input-elegant" type="email" placeholder="EMAIL" name="component_email" />
+                    <input class="input-elegant" type="text" placeholder="MATRICOLA" name="component_matricola" />
+                </div>
+            </div>
+
+            <div class="group-component">
+                <div class="label">Componente 4:</div>
+                <div class="fields">
+                    <input class="input-elegant" type="text" placeholder="NOME" name="component_name" />
+                    <input class="input-elegant" type="text" placeholder="COGNOME" name="component_surname" />
+                    <input class="input-elegant" type="email" placeholder="EMAIL" name="component_email" />
+                    <input class="input-elegant" type="text" placeholder="MATRICOLA" name="component_matricola" />
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn-elegant" onclick="generate()">GENERA</button>
+        </div>
+    </div>
+
+    <div id="result" class="block">
+        <h2 class="subtitle">RISULTATO</h2>
+
+        <div class="result-block">
+            <div class="label">
+                <span>OGGETTO EMAIL</span>
+                <img class="copy" src="assets/icons/copy.svg" alt="copy" title="copia" onclick="copy('generated_subject')" />
+            </div>
+            <div id="generated_subject" class="generated">
+            </div>
+        </div>
+
+        <div class="result-block">
+            <div class="label">
+                <span>CORPO EMAIL</span>
+                <img class="copy" src="assets/icons/copy.svg" alt="copy" title="copia" onclick="copy('generated_body')" />
+            </div>
+            <div id="generated_body" class="generated"></div>
+        </div>
+    </div>
+
+    <div id="share" class="block">
+        <h2 class="subtitle">CONDIVIDI</h2>
+        <div class="description">Per condividere i dati con qualcuno, copia ed condividi lo script qui sotto. Il destinatario dovr&agrave; poi andare su questo sito, utilizzare ispeziona elemento nel browser (su Chrome Ctrl-Shift-I), incollarlo ed eseguirlo nella console di javascript.</div>
+        <div class="label">
+            <span>SCRIPT</span>
+            <img class="copy" src="assets/icons/copy.svg" alt="copy" title="copia" onclick="copy('generated_script')" />
+        </div>
+        <div id="generated_script" class="generated"></div>
+    </div>
+
+    <div id="dialog">
+        <div class="content">
+            <img class="exit" src="assets/icons/exit.svg" alt="exit" title="esci" onclick="closeDialog()" />
+            <div id="dialog_message"></div>
+        </div>
+    </div>
+
+    <script src="scripts/copy-to-clipboard.js"></script>
+    <script src="scripts/validators.js"></script>
+    <script src="scripts/generators.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>

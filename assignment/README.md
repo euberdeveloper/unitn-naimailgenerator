@@ -1,0 +1,1 @@
+The assignment should have html, css and js in a single index.html file

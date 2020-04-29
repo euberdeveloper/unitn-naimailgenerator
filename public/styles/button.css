@@ -1,0 +1,21 @@
+.btn-elegant {
+    font-family: 'Gotham', cursive;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+    letter-spacing: 0.8px;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 500ms;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 10px 18px;
+    color: #000000;
+}
+
+.btn-elegant:hover,
+.btn-elegant:active,
+.btn-elegant:focus {
+    outline: none;
+    text-decoration-color: #000000;
+}
