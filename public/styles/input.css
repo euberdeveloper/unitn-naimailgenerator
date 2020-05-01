@@ -8,6 +8,7 @@
     border-color: #000000;
     outline-color: #000000;
     border: 1px solid;
+    box-shadow: none;
     outline: none;
     transition: outline 100ms;
 }

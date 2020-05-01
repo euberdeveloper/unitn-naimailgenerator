@@ -3,6 +3,7 @@
     padding: 0;
     font-family: 'Gotham', cursive;
     font-size: 18px;
+    background-color: #FFFFF0;
 }
 
 ::selection {
@@ -127,7 +128,7 @@
 }
 
 #dialog .content {
-    background-color: #FFFFFF;
+    background-color: #FFFFF0;
     min-width: 40%;
     min-height: 30%;
     max-width: 80%;
